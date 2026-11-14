@@ -1,0 +1,107 @@
+[
+    {
+        "TimeCreated": "\/Date(1793754602117)\/",
+        "Id": 1,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Process Create:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:10:02.117\r\nProcessGuid: {4f3a1c2e-2c8b-6729-4e02-000000001c00}\r\nProcessId: 4120\r\nImage: C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\r\nFileVersion: 16.0.17928.20156\r\nDescription: Microsoft Word\r\nProduct: Microsoft Office\r\nCompany: Microsoft Corporation\r\nOriginalFileName: WinWord.exe\r\nCommandLine: \"C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\" /n \"C:\\Users\\jkim\\Downloads\\invoice_1104.docm\"\r\nCurrentDirectory: C:\\Users\\jkim\\Documents\\\r\nUser: ACME\\jkim\r\nLogonGuid: {4f3a1c2e-1b70-6729-2c1f-3a0000000000}\r\nLogonId: 0x3A1F2C\r\nTerminalSessionId: 1\r\nIntegrityLevel: Medium\r\nHashes: SHA1=18A529AEC406E4C410A00EF0A8910E04E365A9C0,MD5=82B2841045DC29D9EADA95E88612B2DB,SHA256=E49908878BBB63F4D264569F6A6AF910EB6EFBE1D22AE8F3BA076EBB537FAFC4,IMPHASH=6DC359EF8240A8CE2642AC292189889E\r\nParentProcessGuid: {4f3a1c2e-1b7a-6729-1a00-000000001c00}\r\nParentProcessId: 3880\r\nParentImage: C:\\Windows\\explorer.exe\r\nParentCommandLine: C:\\Windows\\Explorer.EXE\r\nParentUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793754707902)\/",
+        "Id": 1,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Process Create:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:11:47.902\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nFileVersion: 10.0.19041.3996\r\nDescription: Windows PowerShell\r\nProduct: Microsoft® Windows® Operating System\r\nCompany: Microsoft Corporation\r\nOriginalFileName: PowerShell.EXE\r\nCommandLine: powershell.exe -nop -w hidden -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkA\r\nCurrentDirectory: C:\\Users\\jkim\\Documents\\\r\nUser: ACME\\jkim\r\nLogonGuid: {4f3a1c2e-1b70-6729-2c1f-3a0000000000}\r\nLogonId: 0x3A1F2C\r\nTerminalSessionId: 1\r\nIntegrityLevel: Medium\r\nHashes: SHA1=DA95048A93E9CC66CA595A42E7A4AFF69AD9BCE8,MD5=B6D934ED900E3C85504C88338A91C151,SHA256=1465C0D0B2A9AD72DB029CEBA90139CDD6C1AC71F08FAE54B2CA4937BFE4A04B,IMPHASH=FA7426A3889035E451705552AC1C568F\r\nParentProcessGuid: {4f3a1c2e-2c8b-6729-4e02-000000001c00}\r\nParentProcessId: 4120\r\nParentImage: C:\\Program Files\\Microsoft Office\\root\\Office16\\WINWORD.EXE\r\nParentCommandLine: C:\\Windows\\Explorer.EXE\r\nParentUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793754729441)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:12:09.441\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: false\r\nSourceIp: 10.20.1.42\r\nSourceHostname: -\r\nSourcePort: 50123\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 203.0.113.45\r\nDestinationHostname: -\r\nDestinationPort: 443\r\nDestinationPortName: https"
+    },
+    {
+        "TimeCreated": "\/Date(1793755029452)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:17:09.452\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: false\r\nSourceIp: 10.20.1.42\r\nSourceHostname: -\r\nSourcePort: 50177\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 203.0.113.45\r\nDestinationHostname: -\r\nDestinationPort: 443\r\nDestinationPortName: https"
+    },
+    {
+        "TimeCreated": "\/Date(1793755329460)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:22:09.460\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: false\r\nSourceIp: 10.20.1.42\r\nSourceHostname: -\r\nSourcePort: 50214\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 203.0.113.45\r\nDestinationHostname: edge-1.example.org\r\nDestinationPort: 8443\r\nDestinationPortName: -"
+    },
+    {
+        "TimeCreated": "\/Date(1793754780000)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:13:00.000\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: false\r\nSourceIp: 10.20.1.42\r\nSourceHostname: -\r\nSourcePort: 50131\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 10.20.0.5\r\nDestinationHostname: -\r\nDestinationPort: 445\r\nDestinationPortName: -"
+    },
+    {
+        "TimeCreated": "\/Date(1793754785250)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:13:05.250\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: false\r\nSourceIp: 127.0.0.1\r\nSourceHostname: -\r\nSourcePort: 50140\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 127.0.0.1\r\nDestinationHostname: -\r\nDestinationPort: 5985\r\nDestinationPortName: -"
+    },
+    {
+        "TimeCreated": "\/Date(1793754728990)\/",
+        "Id": 22,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Dns query:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:12:08.990\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nQueryName: update-check.example.net\r\nQueryStatus: 0\r\nQueryResults: type:  5 edge-1.example.org;::ffff:203.0.113.45;\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793755028990)\/",
+        "Id": 22,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Dns query:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:17:08.990\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nQueryName: update-check.example.net\r\nQueryStatus: 0\r\nQueryResults: type:  5 edge-1.example.org;::ffff:203.0.113.45;\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793754721004)\/",
+        "Id": 22,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Dns query:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:12:01.004\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nQueryName: wpad\r\nQueryStatus: 9003\r\nQueryResults: -\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793754721311)\/",
+        "Id": 22,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Dns query:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:12:01.311\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nQueryName: 45.113.0.203.in-addr.arpa\r\nQueryStatus: 0\r\nQueryResults: type:  12 edge-1.example.org;\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793754331004)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:05:31.004\r\nProcessGuid: {4f3a1c2e-0a01-6729-0c00-000000001c00}\r\nProcessId: 1088\r\nImage: C:\\Windows\\System32\\svchost.exe\r\nUser: NT AUTHORITY\\NETWORK SERVICE\r\nProtocol: tcp\r\nInitiated: false\r\nSourceIsIpv6: false\r\nSourceIp: 198.51.100.23\r\nSourceHostname: -\r\nSourcePort: 51514\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 10.20.1.42\r\nDestinationHostname: WKS-FIN-0142.acme.example\r\nDestinationPort: 3389\r\nDestinationPortName: -"
+    },
+    {
+        "TimeCreated": "\/Date(1793754840000)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:14:00.000\r\nProcessGuid: \r\nProcessId: 7720\r\nImage: C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: false\r\nSourceIp: 10.20.1.42\r\nSourceHostname: -\r\nSourcePort: 50190\r\nSourcePortName: -\r\nDestinationIsIpv6: false\r\nDestinationIp: 192.0.2.80\r\nDestinationHostname: -\r\nDestinationPort: 80\r\nDestinationPortName: -"
+    },
+    {
+        "TimeCreated": "\/Date(1793755800001)\/",
+        "Id": 5,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Process terminated:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:30:00.001\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim"
+    },
+    {
+        "TimeCreated": "\/Date(1793755480100)\/",
+        "Id": 3,
+        "MachineName": "WKS-FIN-0142.acme.example",
+        "ProviderName": "Microsoft-Windows-Sysmon",
+        "Message": "Network connection detected:\r\nRuleName: -\r\nUtcTime: 2026-11-04 01:24:40.100\r\nProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}\r\nProcessId: 6644\r\nImage: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\r\nUser: ACME\\jkim\r\nProtocol: tcp\r\nInitiated: true\r\nSourceIsIpv6: true\r\nSourceIp: fd00:20:0:0:0:0:0:142\r\nSourceHostname: -\r\nSourcePort: 50300\r\nSourcePortName: -\r\nDestinationIsIpv6: true\r\nDestinationIp: 2001:0db8:0000:0000:0000:ff00:0042:8329\r\nDestinationHostname: -\r\nDestinationPort: 443\r\nDestinationPortName: https"
+    }
+]

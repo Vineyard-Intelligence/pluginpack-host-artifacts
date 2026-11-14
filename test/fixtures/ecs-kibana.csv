@@ -1,0 +1,3 @@
+@timestamp,event.category,event.action,host.name,process.entity_id,process.pid,process.name,process.executable,destination.ip,destination.port,network.direction,network.transport
+"Nov 4, 2026 @ 03:20:40.700",network,connection_attempted,build-07,NzY0NTMyNzEtMWQ3Ni00MmM0LWE4ZDEtYjI2ZWQ0ZGE1NmQzLTQ0NzgtMTczMDY4MzY1MA==,4478,curl,/usr/bin/curl,198.51.100.77,443,egress,tcp
+2026-11-04T03:25:02.000Z,network,connection_attempted,build-07,NzY0NTMyNzEtMWQ3Ni00MmM0LWE4ZDEtYjI2ZWQ0ZGE1NmQzLTQ0NzgtMTczMDY4MzY1MA==,4478,curl,/usr/bin/curl,198.51.100.78,443,egress,tcp

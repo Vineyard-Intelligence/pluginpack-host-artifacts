@@ -1,0 +1,109 @@
+{
+  "identifier": "run.vineyard.pluginpacks.host_artifacts",
+  "content_type": "vineyard:pluginpack",
+  "name": "Host Artifacts",
+  "version": "1.0.0",
+  "summary": "Imports Sysmon and EDR process, network and DNS events from exports you pick, parsed locally, as processes linked to the addresses and domains they reached and the files they ran from.",
+  "description": "For bringing a host's own record into the investigation: which process reached which address or domain, what spawned it, and the hash of the file it ran from. It reads exports you already hold: Sysmon events 1, 3 and 22 (wevtutil or Event Viewer XML, Get-WinEvent, Winlogbeat, Velociraptor, KAPE's EvtxECmd, evtx_dump, a SIEM's CSV) and ECS process, network and DNS events from an EDR such as Elastic Defend. Parsed on this device, nothing looked up: no account, key or cost.\n\nFilter the export to the hosts and time you are investigating first: a file can be 25 MB at most, and a run stops at 1,500 nodes, taking first the processes that reached infrastructure already in the project.\n\nHost names, user names and command lines become node fields, so a project on a Vineyard server holds them there. For host data that must stay on this machine, use the desktop app in local mode.\n\n**Read results with care:**\n\n- A record without a ProcessGuid (or ECS `entity_id`) is skipped, so process lists and netstat tables are not read: without it, one image name and PID on two hosts would become one process.\n- Loopback, link-local and multicast traffic never comes in; private-network addresses and internal names only when you ask.\n- A link's `events`, `ports` and first and last times describe the last import that saw the pair: a later export replaces them rather than adding to them, and keeps the link's label.\n- A command line longer than one node can hold (Linux allows megabytes of arguments) is cut, keeping its start, and the node says so with `command_line_truncated` and `command_line_length`.\n- Running the import again restates the summary on every link it saw, so the review lists those links again even when nothing in them changed.\n\n**Source:** https://github.com/Vineyard-Intelligence/pluginpack-host-artifacts (Apache-2.0)",
+  "author": {
+    "name": "VINEYARD",
+    "url": "https://github.com/Vineyard-Intelligence"
+  },
+  "license": "Apache-2.0",
+  "icon": "cpu",
+  "platforms": {
+    "primary": "web",
+    "web": {
+      "runtime": "sandbox-js",
+      "entry": "dist/pack.mjs"
+    },
+    "desktop": {
+      "runtime": "sandbox-js",
+      "entry": "dist/pack.mjs"
+    }
+  },
+  "plugins": [
+    {
+      "identifier": "run.vineyard.plugins.process_activity_import",
+      "content_type": "vineyard:plugin",
+      "name": "Process Activity Import",
+      "version": "1.0.0",
+      "description": "Reads Sysmon (events 1, 3 and 22) or ECS process, network and DNS event exports picked in the Run dialog (no selection), locally, as JSON, JSON lines, CSV or Windows event XML. Creates a Process node per process GUID, linked to the IP addresses it connected to, the domains it queried, the process that spawned it and the File node (with hashes) it executed from.",
+      "icon": "cpu",
+      "platforms": {
+        "primary": "web",
+        "web": {
+          "runtime": "sandbox-js",
+          "entry": "dist/pack.mjs"
+        },
+        "desktop": {
+          "runtime": "sandbox-js",
+          "entry": "dist/pack.mjs"
+        }
+      },
+      "io": {
+        "consumes": [],
+        "produces": [
+          {
+            "typepack": "run.vineyard.typepacks.endpoint",
+            "category": "endpoint",
+            "name": "process"
+          },
+          {
+            "typepack": "run.vineyard.typepacks.endpoint",
+            "category": "endpoint",
+            "name": "file"
+          },
+          {
+            "typepack": "run.vineyard.typepacks.infrastructure",
+            "category": "infrastructure",
+            "name": "ip_address"
+          },
+          {
+            "typepack": "run.vineyard.typepacks.infrastructure",
+            "category": "infrastructure",
+            "name": "domain"
+          }
+        ]
+      },
+      "params": {
+        "type": "object",
+        "properties": {
+          "exports": {
+            "type": "array",
+            "format": "file",
+            "title": "Event exports",
+            "description": "Sysmon events 1, 3 and 22, or ECS process, network and DNS events, as JSON, JSON lines, CSV or event XML. Filter to the hosts and time you are investigating first."
+          },
+          "include_private": {
+            "type": "boolean",
+            "title": "Include private-network addresses and internal names"
+          },
+          "include_inactive": {
+            "type": "boolean",
+            "title": "Also import processes with no network or DNS activity"
+          }
+        },
+        "required": [
+          "exports"
+        ]
+      },
+      "scopes": {
+        "graph": [
+          "node:read",
+          "node:create",
+          "edge:read",
+          "edge:create"
+        ]
+      },
+      "lifecycle": {
+        "persistence": "opt-in",
+        "controls": [
+          "progress",
+          "cancel"
+        ],
+        "progress": "determinate"
+      }
+    }
+  ]
+}

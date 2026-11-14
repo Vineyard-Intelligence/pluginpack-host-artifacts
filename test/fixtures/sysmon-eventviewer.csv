@@ -1,0 +1,248 @@
+Level,Date and Time,Source,Event ID,Task Category
+Information,11/4/2026 10:10:02 AM,Microsoft-Windows-Sysmon,1,Process Create (rule: ProcessCreate),"Process Create:
+RuleName: -
+UtcTime: 2026-11-04 01:10:02.117
+ProcessGuid: {4f3a1c2e-2c8b-6729-4e02-000000001c00}
+ProcessId: 4120
+Image: C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE
+FileVersion: 16.0.17928.20156
+Description: Microsoft Word
+Product: Microsoft Office
+Company: Microsoft Corporation
+OriginalFileName: WinWord.exe
+CommandLine: ""C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE"" /n ""C:\Users\jkim\Downloads\invoice_1104.docm""
+CurrentDirectory: C:\Users\jkim\Documents\
+User: ACME\jkim
+LogonGuid: {4f3a1c2e-1b70-6729-2c1f-3a0000000000}
+LogonId: 0x3A1F2C
+TerminalSessionId: 1
+IntegrityLevel: Medium
+Hashes: SHA1=18A529AEC406E4C410A00EF0A8910E04E365A9C0,MD5=82B2841045DC29D9EADA95E88612B2DB,SHA256=E49908878BBB63F4D264569F6A6AF910EB6EFBE1D22AE8F3BA076EBB537FAFC4,IMPHASH=6DC359EF8240A8CE2642AC292189889E
+ParentProcessGuid: {4f3a1c2e-1b7a-6729-1a00-000000001c00}
+ParentProcessId: 3880
+ParentImage: C:\Windows\explorer.exe
+ParentCommandLine: C:\Windows\Explorer.EXE
+ParentUser: ACME\jkim"
+Information,11/4/2026 10:11:47 AM,Microsoft-Windows-Sysmon,1,Process Create (rule: ProcessCreate),"Process Create:
+RuleName: -
+UtcTime: 2026-11-04 01:11:47.902
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+FileVersion: 10.0.19041.3996
+Description: Windows PowerShell
+Product: Microsoft® Windows® Operating System
+Company: Microsoft Corporation
+OriginalFileName: PowerShell.EXE
+CommandLine: powershell.exe -nop -w hidden -enc SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABpAGUAbgB0ACkA
+CurrentDirectory: C:\Users\jkim\Documents\
+User: ACME\jkim
+LogonGuid: {4f3a1c2e-1b70-6729-2c1f-3a0000000000}
+LogonId: 0x3A1F2C
+TerminalSessionId: 1
+IntegrityLevel: Medium
+Hashes: SHA1=DA95048A93E9CC66CA595A42E7A4AFF69AD9BCE8,MD5=B6D934ED900E3C85504C88338A91C151,SHA256=1465C0D0B2A9AD72DB029CEBA90139CDD6C1AC71F08FAE54B2CA4937BFE4A04B,IMPHASH=FA7426A3889035E451705552AC1C568F
+ParentProcessGuid: {4f3a1c2e-2c8b-6729-4e02-000000001c00}
+ParentProcessId: 4120
+ParentImage: C:\Program Files\Microsoft Office\root\Office16\WINWORD.EXE
+ParentCommandLine: C:\Windows\Explorer.EXE
+ParentUser: ACME\jkim"
+Information,11/4/2026 10:12:09 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:12:09.441
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 10.20.1.42
+SourceHostname: -
+SourcePort: 50123
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 203.0.113.45
+DestinationHostname: -
+DestinationPort: 443
+DestinationPortName: https"
+Information,11/4/2026 10:17:09 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:17:09.452
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 10.20.1.42
+SourceHostname: -
+SourcePort: 50177
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 203.0.113.45
+DestinationHostname: -
+DestinationPort: 443
+DestinationPortName: https"
+Information,11/4/2026 10:22:09 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:22:09.460
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 10.20.1.42
+SourceHostname: -
+SourcePort: 50214
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 203.0.113.45
+DestinationHostname: edge-1.example.org
+DestinationPort: 8443
+DestinationPortName: -"
+Information,11/4/2026 10:13:00 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:13:00.000
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 10.20.1.42
+SourceHostname: -
+SourcePort: 50131
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 10.20.0.5
+DestinationHostname: -
+DestinationPort: 445
+DestinationPortName: -"
+Information,11/4/2026 10:13:05 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:13:05.250
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 127.0.0.1
+SourceHostname: -
+SourcePort: 50140
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 127.0.0.1
+DestinationHostname: -
+DestinationPort: 5985
+DestinationPortName: -"
+Information,11/4/2026 10:12:08 AM,Microsoft-Windows-Sysmon,22,Dns query (rule: Dnsquery),"Dns query:
+RuleName: -
+UtcTime: 2026-11-04 01:12:08.990
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+QueryName: update-check.example.net
+QueryStatus: 0
+QueryResults: type:  5 edge-1.example.org;::ffff:203.0.113.45;
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim"
+Information,11/4/2026 10:17:08 AM,Microsoft-Windows-Sysmon,22,Dns query (rule: Dnsquery),"Dns query:
+RuleName: -
+UtcTime: 2026-11-04 01:17:08.990
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+QueryName: update-check.example.net
+QueryStatus: 0
+QueryResults: type:  5 edge-1.example.org;::ffff:203.0.113.45;
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim"
+Information,11/4/2026 10:12:01 AM,Microsoft-Windows-Sysmon,22,Dns query (rule: Dnsquery),"Dns query:
+RuleName: -
+UtcTime: 2026-11-04 01:12:01.004
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+QueryName: wpad
+QueryStatus: 9003
+QueryResults: -
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim"
+Information,11/4/2026 10:12:01 AM,Microsoft-Windows-Sysmon,22,Dns query (rule: Dnsquery),"Dns query:
+RuleName: -
+UtcTime: 2026-11-04 01:12:01.311
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+QueryName: 45.113.0.203.in-addr.arpa
+QueryStatus: 0
+QueryResults: type:  12 edge-1.example.org;
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim"
+Information,11/4/2026 10:05:31 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:05:31.004
+ProcessGuid: {4f3a1c2e-0a01-6729-0c00-000000001c00}
+ProcessId: 1088
+Image: C:\Windows\System32\svchost.exe
+User: NT AUTHORITY\NETWORK SERVICE
+Protocol: tcp
+Initiated: false
+SourceIsIpv6: false
+SourceIp: 198.51.100.23
+SourceHostname: -
+SourcePort: 51514
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 10.20.1.42
+DestinationHostname: WKS-FIN-0142.acme.example
+DestinationPort: 3389
+DestinationPortName: -"
+Information,11/4/2026 10:14:00 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:14:00.000
+ProcessGuid: 
+ProcessId: 7720
+Image: C:\Program Files\Google\Chrome\Application\chrome.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: false
+SourceIp: 10.20.1.42
+SourceHostname: -
+SourcePort: 50190
+SourcePortName: -
+DestinationIsIpv6: false
+DestinationIp: 192.0.2.80
+DestinationHostname: -
+DestinationPort: 80
+DestinationPortName: -"
+Information,11/4/2026 10:30:00 AM,Microsoft-Windows-Sysmon,5,Process terminated (rule: Processterminated),"Process terminated:
+RuleName: -
+UtcTime: 2026-11-04 01:30:00.001
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim"
+Information,11/4/2026 10:24:40 AM,Microsoft-Windows-Sysmon,3,Network connection detected (rule: Networkconnectiondetected),"Network connection detected:
+RuleName: -
+UtcTime: 2026-11-04 01:24:40.100
+ProcessGuid: {4f3a1c2e-2d13-6729-5102-000000001c00}
+ProcessId: 6644
+Image: C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+User: ACME\jkim
+Protocol: tcp
+Initiated: true
+SourceIsIpv6: true
+SourceIp: fd00:20:0:0:0:0:0:142
+SourceHostname: -
+SourcePort: 50300
+SourcePortName: -
+DestinationIsIpv6: true
+DestinationIp: 2001:0db8:0000:0000:0000:ff00:0042:8329
+DestinationHostname: -
+DestinationPort: 443
+DestinationPortName: https"

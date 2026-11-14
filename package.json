@@ -1,0 +1,14 @@
+{
+  "name": "pluginpack-host-artifacts",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs && node gen-manifest.mjs",
+    "test": "node test-plugin.mjs",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12",
+    "typescript": "^5.7.0"
+  }
+}
