@@ -287,6 +287,29 @@ function makeHost({ types = ALL_TYPES } = {}) {
         for (const [k, v] of Object.entries(b)) if (v != null && v !== '') out[k] = v;
         return out;
     };
+    // host-bridge's edge-data-noop.ts, ported: does laying `data` over a link's data leave every key
+    // as it was? No value (null, undefined, and the NaN or Infinity JSON sends as null) matches no
+    // value; anything else an equal value, key order inside an object aside. Compared with the link
+    // as this run's earlier updates of it leave it.
+    const sorted = (v) => JSON.stringify(v, (_k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.fromEntries(Object.keys(x).sort().map((k) => [k, x[k]])) : x));
+    const noValue = (j) => j === undefined || j === 'null';
+    const asStaged = (edge, staged) => {
+        const now = { ...(edge.data ?? {}) };
+        for (const u of staged.edgeUpdates) if (u.edge === edge) Object.assign(now, u.data ?? {});
+        return now;
+    };
+    const changesNothing = (data, edge, staged) => {
+        const now = asStaged(edge, staged);
+        return Object.entries(data).every(([k, v]) => (noValue(sorted(v)) ? noValue(sorted(now[k])) : sorted(v) === sorted(now[k])));
+    };
+    // host-bridge's corroborationFrom: the same wording from the writer who wrote it, or from one
+    // already listed (as this run leaves the link), adds no one; anyone else is a second,
+    // independent source, recorded in `corroborated_by`, with data or without.
+    const corroboration = (edge, staged, writer) => {
+        const listed = asStaged(edge, staged).corroborated_by ?? [];
+        if (writer === edge.data?.label_source || listed.includes(writer)) return undefined;
+        return [...listed, writer].sort();
+    };
     // `writer` is what commit stamps as the edge's label_source (labelSourceForRun): `plugin:<id>`
     // for a plugin. A seed run that only creates nodes needs none.
     function newRun(writer = 'analyst') {
@@ -338,17 +361,18 @@ function makeHost({ types = ALL_TYPES } = {}) {
                 }
                 if (unstorable(e.data) || unstorable(e.label)) throw new Error('createEdge: a NUL character or an unpaired surrogate');
                 const existing = live.edges.find((x) => x.from === e.from && x.to === e.to);
+                // host-bridge: data the link already holds is no data.
+                if (existing && e.data && changesNothing(e.data, existing, staged)) e = { ...e, data: undefined };
                 if (existing && !e.data && e.label.trim() === existing.label.trim()) {
-                    // host-bridge: the same wording from the writer who wrote it, or from one already
-                    // listed, is nothing; from anyone else it is a second, independent source for the
-                    // link, staged as one corroboration row that commit grades `recorded`.
-                    const listed = existing.data?.corroborated_by ?? [];
-                    if (writer === existing.data?.label_source || listed.includes(writer)) return;
-                    staged.edgeUpdates.push({ edge: existing, label: undefined, data: { corroborated_by: [...listed, writer].sort() } });
+                    // host-bridge: one corroboration row, which commit grades `recorded`, or nothing.
+                    const by = corroboration(existing, staged, writer);
+                    if (by) staged.edgeUpdates.push({ edge: existing, label: undefined, data: { corroborated_by: by } });
                     return;
                 }
                 if (existing) {
-                    staged.edgeUpdates.push({ edge: existing, label: e.label.trim() === existing.label.trim() ? undefined : e.label, data: e.data });
+                    const same = e.label.trim() === existing.label.trim();
+                    const by = same ? corroboration(existing, staged, writer) : undefined;
+                    staged.edgeUpdates.push({ edge: existing, label: same ? undefined : e.label, data: by ? { ...e.data, corroborated_by: by } : e.data });
                     return;
                 }
                 // The backend holds one edge per ordered pair; a second create in one change set fails.
@@ -358,7 +382,7 @@ function makeHost({ types = ALL_TYPES } = {}) {
                 staged.edges.push({ from: e.from, to: e.to, label: e.label, data: e.data });
             },
             // host-bridge's updateEdge: by id, a label equal to the live one is no relabel, and a call
-            // with neither a new label nor data stages nothing.
+            // with neither a new label nor data that changes something stages nothing.
             async updateEdge(id, patch) {
                 const edge = live.edges.find((x) => x.id === id);
                 if (!edge) throw new Error(`no edge ${id} in this project`);
@@ -367,8 +391,9 @@ function makeHost({ types = ALL_TYPES } = {}) {
                 }
                 if (unstorable(patch?.data) || unstorable(patch?.label)) throw new Error('updateEdge: a NUL character or an unpaired surrogate');
                 const label = patch?.label !== undefined && patch.label.trim() !== edge.label.trim() ? patch.label : undefined;
-                if (label === undefined && !patch?.data) return;
-                staged.edgeUpdates.push({ edge, label, data: patch.data });
+                const data = patch?.data && !changesNothing(patch.data, edge, staged) ? patch.data : undefined;
+                if (label === undefined && !data) return;
+                staged.edgeUpdates.push({ edge, label, data });
             },
         };
         const apply = () => {
@@ -634,19 +659,34 @@ await test('every write passes the type packs, and no pair is linked twice in on
     assert.equal(result.counts.refused, 0, result.summary);
 });
 
-await test('a second import onto the applied graph adds no node and re-asserts no plain link', async () => {
+await test('a second import of the same export onto the applied graph stages nothing', async () => {
     const host = makeHost();
     const first = await runOn(host, [fx('sysmon-wevtutil.xml')]);
     first.run.apply();
+    // A new link lands with its summary from the first import: commit sends a create's data.
+    const summarised = host.live.edges.filter((e) => e.label !== 'spawned' && e.label !== 'executed from');
+    assert.equal(summarised.length, 4);
+    assert.ok(summarised.every((e) => e.data.source === 'sysmon' && e.data.events >= 1 && e.data.first_seen), 'summary on a new link');
     const again = await runOn(host, [fx('sysmon-wevtutil.xml')]);
     assert.equal(again.run.staged.creates.length, 0, 'every node is found by its identity');
+    assert.equal(again.run.staged.updates.length, 0, 'and none of them changes');
     assert.equal(again.run.staged.edges.length, 0);
-    // Links that carry a summary are restated with it; spawned / executed from carry none and are silent.
-    // The four restatements change nothing here, and the host stages them anyway: it cannot tell, and
-    // neither can the pack, which reads edges without their data. The pack page says so.
-    assert.ok(again.run.staged.edgeUpdates.every((u) => u.data && u.label === undefined), 'never a relabel');
-    assert.ok(again.run.staged.edgeUpdates.every((u) => !('corroborated_by' in u.data)), 'never its own corroborator');
-    assert.equal(again.run.staged.edgeUpdates.length, 4);
+    // The summarised links are restated by id with their whole summary, null for the keys with no
+    // value; spawned / executed from carry none and are silent. None of it changes what the links
+    // hold, and the host stages an edge write only when it does: the pack cannot tell, because it
+    // reads edges without their data.
+    assert.deepEqual(again.run.staged.edgeUpdates, [], 'an unchanged summary is no update');
+    // A link whose stored summary differs, as an earlier and shorter export left it, is the one update:
+    // by id, without a relabel, clearing the key this export has no value for.
+    const older = summarised.find((e) => e.label === 'queried');
+    older.data = { ...older.data, events: 1, failed_events: 1 };
+    const changed = (await runOn(host, [fx('sysmon-wevtutil.xml')])).run.staged.edgeUpdates;
+    assert.equal(changed.length, 1);
+    assert.equal(changed[0].edge, older);
+    assert.equal(changed[0].label, undefined, 'never a relabel');
+    assert.equal(changed[0].data.events, 2);
+    assert.equal(changed[0].data.failed_events, null);
+    assert.ok(!('corroborated_by' in changed[0].data), 'never its own corroborator');
 });
 
 await test('a link already in the project keeps its label, whoever wrote it', async () => {
@@ -656,6 +696,9 @@ await test('a link already in the project keeps its label, whoever wrote it', as
     // What the Properties panel does on a rename: the new wording, and the analyst as its source.
     const rename = (e, label) => Object.assign(e, { label, data: { ...e.data, label_source: 'analyst' } });
     rename(c2, 'C2 beacon');
+    // As an earlier export left it, so the next one has a summary to write: one that changes nothing
+    // stages nothing.
+    c2.data.events = 1;
     const spawn = rename(host.live.edges.find((e) => e.label === 'spawned'), 'injected into');
     const exec = rename(host.live.edges.find((e) => e.label === 'executed from'), 'loaded from');
     const { run, result } = await runOn(host, [fx('sysmon-splunk.csv')]);
@@ -947,6 +990,9 @@ await test('plugins/host-artifacts.manifest.json is what gen-manifest.mjs makes 
     assert.deepEqual(Object.keys(manifest.plugins[0].params.properties), ['exports', 'include_private', 'include_inactive']);
     assert.deepEqual(manifest.plugins[0].scopes, { graph: ['node:read', 'node:create', 'edge:read', 'edge:create'] }, 'no network, no update');
     assert.ok(manifest.summary.length <= 250 && manifest.description.length <= 16000);
+    // The page is the catalog's About section, not documentation: it stays within the 1,500
+    // characters every pack page keeps to.
+    assert.ok(manifest.description.length <= 1500, `the pack page is ${manifest.description.length} characters`);
 });
 
 console.log(`\n${passed} passed, ${failed} failed`);

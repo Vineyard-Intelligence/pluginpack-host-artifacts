@@ -272,7 +272,9 @@ const processActivityImport = definePlugin({
                     if (!own) labelsKept++;
                     if (e.data) {
                         // This import's summary replaces the last one whole, so the keys it has no
-                        // value for are cleared rather than left describing an earlier export.
+                        // value for are cleared rather than left describing an earlier export. Sent
+                        // whether or not it changed: edges() returns no data to compare with, and the
+                        // host stages the call only when a key differs, a null matching no value.
                         const data = e.keys ? { ...Object.fromEntries(e.keys.map((k) => [k, null])), ...e.data } : e.data;
                         if (ctx.graph!.updateEdge) await ctx.graph!.updateEdge(live.id, { data });
                         // A host without updateEdge: the live wording with data is the same update.
@@ -358,19 +360,18 @@ const processActivityImport = definePlugin({
 // below the one-line `summary`. Kept as an array of lines rather than a template literal so the
 // Markdown's backticks need no escaping.
 const PACK_PAGE = [
-    "For bringing a host's own record into the investigation: which process reached which address or domain, what spawned it, and the hash of the file it ran from. It reads exports you already hold: Sysmon events 1, 3 and 22 (wevtutil or Event Viewer XML, Get-WinEvent, Winlogbeat, Velociraptor, KAPE's EvtxECmd, evtx_dump, a SIEM's CSV) and ECS process, network and DNS events from an EDR such as Elastic Defend. Parsed on this device, nothing looked up: no account, key or cost.",
+    "For bringing a host's own record into the investigation: which process reached which address or domain, what spawned it, and the hash of the file it ran from. It reads exports you already hold: Sysmon events 1, 3 and 22 (wevtutil or Event Viewer XML, Get-WinEvent, Winlogbeat, Velociraptor, EvtxECmd, evtx_dump, a SIEM's CSV) and ECS process, network and DNS events from an EDR such as Elastic Defend. Parsed on this device, nothing looked up: no account, key or cost.",
     '',
     'Filter the export to the hosts and time you are investigating first: a file can be 25 MB at most, and a run stops at 1,500 nodes, taking first the processes that reached infrastructure already in the project.',
     '',
-    'Host names, user names and command lines become node fields, so a project on a Vineyard server holds them there. For host data that must stay on this machine, use the desktop app in local mode.',
+    'Host names, user names and command lines become node fields, so a project on a Vineyard server holds them. For host data that must stay on this machine, use the desktop app in local mode.',
     '',
     '**Read results with care:**',
     '',
-    '- A record without a ProcessGuid (or ECS `entity_id`) is skipped, so process lists and netstat tables are not read: without it, one image name and PID on two hosts would become one process.',
+    '- A record without a ProcessGuid (or ECS `entity_id`) is skipped, so process lists and netstat tables are not read.',
     '- Loopback, link-local and multicast traffic never comes in; private-network addresses and internal names only when you ask.',
-    "- A link's `events`, `ports` and first and last times describe the last import that saw the pair: a later export replaces them rather than adding to them, and keeps the link's label.",
-    '- A command line longer than one node can hold (Linux allows megabytes of arguments) is cut, keeping its start, and the node says so with `command_line_truncated` and `command_line_length`.',
-    '- Running the import again restates the summary on every link it saw, so the review lists those links again even when nothing in them changed.',
+    "- A link's `events`, `ports` and first and last times cover only the last import that saw the pair; a later export replaces them.",
+    '- A command line too long for one node is cut to its start, marked `command_line_truncated` with the full `command_line_length`.',
     '',
     '**Source:** https://github.com/Vineyard-Intelligence/pluginpack-host-artifacts (Apache-2.0)',
 ].join('\n');

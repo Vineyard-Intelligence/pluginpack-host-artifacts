@@ -76,9 +76,12 @@ only when it still carries the pack's own wording. Restating someone else's word
 than noise: the host takes the same label from a second writer as an independent source for the
 link and records it in `corroborated_by`, and this pack would only have read the label back.
 
-The host stages every one of those summary updates, changed or not, because neither it nor the
-plugin compares them with the edge's stored data (`edges()` returns no data). Running the same
-import twice therefore lists every summarised link in the review again.
+A new link is stored with its summary from the first import, and the link's Properties panel and
+the review show it under **Recorded with this link**. A later import sends every summarised link's
+summary again, changed or not, because the plugin cannot compare it (`edges()` returns no data).
+The host does: it stages an edge write only when a key differs from what the link stores, a null
+matching a key the link does not have. Importing the same export twice therefore stages nothing,
+and a later export puts up for review only the links whose summary it changes.
 
 **Left out:** loopback, link-local, multicast and unspecified addresses always; private-network
 addresses (RFC 1918, CGNAT, unique-local) and internal names (single-label, `.local`, `.corp`,
