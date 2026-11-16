@@ -95,7 +95,11 @@ await test('names: lower case, no trailing dot, and the classes a query can fall
     assert.equal(nm('dc01.corp.local').cls, 'internal');
     assert.equal(nm('45.113.0.203.in-addr.arpa').cls, 'reverse');
     assert.equal(nm('203.0.113.45').cls, 'address');
-    assert.equal(nm('xn--80ak6aa92e.xn--p1ai').cls, 'invalid', 'the Domain validator takes letters-only TLDs');
+    // An internationalised TLD is a Domain (Infrastructure 4.3): punycode in either case, or Unicode.
+    for (const idn of ['xn--80ak6aa92e.xn--p1ai', 'EXAMPLE.XN--P1AI', 'пример.рф', 'evil.xn--3e0b707e']) {
+        assert.deepEqual(nm(idn), { name: idn.toLowerCase(), cls: 'public', valid: true }, idn);
+    }
+    assert.equal(nm('a..example').valid, false, 'an empty label is not a Domain');
     assert.equal(nm('_ldap._tcp.example.com').cls, 'public');
 });
 
@@ -322,9 +326,10 @@ function makeHost({ types = ALL_TYPES } = {}) {
             async get(id) {
                 return live.nodes.get(id) ?? staged.creates.find((n) => n.id === id) ?? null;
             },
-            // host-bridge's toEdge: id, ends and label, no data.
+            // host-bridge's toEdge: id, ends, label and a copy of the data. The pack reads only the
+            // id and the label, and leaves comparing the data to the host.
             async edges() {
-                return live.edges.map((e) => ({ id: e.id, from_node_id: e.from, to_node_id: e.to, label: e.label }));
+                return live.edges.map((e) => ({ id: e.id, from_node_id: e.from, to_node_id: e.to, label: e.label, ...(e.data ? { data: structuredClone(e.data) } : {}) }));
             },
             async createNode(d) {
                 const problem = validate(types, d.type, d.data);
@@ -480,6 +485,28 @@ const SYSMON = [
     'sysmon-splunk.csv',
 ];
 const PS = '{4f3a1c2e-2d13-6729-5102-000000001c00}';
+
+await test('the Domain rule is the type pack’s, verbatim', () => {
+    assert.equal(P.DOMAIN_REGEX, ALL_TYPES['infrastructure.domain'].properties.domain_name.validator.regex);
+});
+
+await test('a name under an internationalised TLD is a Domain the process queried, or counted where the project’s type refuses it', async () => {
+    const idn = Buffer.from(fixture('sysmon-wevtutil.xml').toString('utf8').replaceAll('update-check.example.net', 'update-check.example.xn--p1ai'));
+    const now = await runOn(makeHost(), [asFile('idn.xml', idn)]);
+    assert.deepEqual(nodesOf(now.run, 'infrastructure.domain').map((n) => n.data.domain_name), ['update-check.example.xn--p1ai']);
+    assert.equal(edgeOf(now.run, 'queried', 'update-check.example.xn--p1ai').data.events, 2);
+    assert.doesNotMatch(now.result.summary, /Domain type does not accept/);
+    // A project on Infrastructure 4.2, whose Domain type takes letters-only TLDs.
+    const v42 = structuredClone(ALL_TYPES);
+    v42['infrastructure.domain'].properties.domain_name.validator = { regex: '^[a-zA-Z0-9._-]+\\.[a-zA-Z]{2,}$' };
+    const old = await runOn(makeHost({ types: v42 }), [asFile('idn.xml', idn)]);
+    assert.deepEqual(nodesOf(old.run, 'infrastructure.domain'), []);
+    assert.ok(!old.run.staged.edges.some((e) => e.label === 'queried'), 'no link to a node that was not written');
+    assert.equal(old.result.counts.refused, 0, 'not a failed write');
+    assert.equal(old.result.counts.domains_refused, 1);
+    assert.match(old.result.summary, /1 name this project's Domain type does not accept \(Infrastructure 4\.3 or later takes internationalised names\)/);
+    assert.equal(nodesOf(old.run, 'endpoint.process').length, nodesOf(now.run, 'endpoint.process').length, 'the rest of the export still comes in');
+});
 
 await test('a Sysmon export becomes processes linked to where they went, what spawned them and what they ran', async () => {
     const { run, result } = await runOn(makeHost(), [fx('sysmon-wevtutil.xml')]);

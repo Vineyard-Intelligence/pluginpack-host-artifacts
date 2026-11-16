@@ -252,7 +252,7 @@ export function addEvent(model: Model, ev: HostEvent, opts: Options): void {
         return;
     }
     // Asked for or not, a name the Domain type's validator refuses cannot become a node: a
-    // single-label internal name (`wpad`), or a TLD the validator does not take (`xn--p1ai`).
+    // single-label internal name (`wpad`), or one with an empty label (`a..example`).
     if (!n.valid) {
         t.invalidNames++;
         return;

@@ -210,6 +210,7 @@ const processActivityImport = definePlugin({
         const made = { process: 0, file: 0, ip: 0, domain: 0 };
         let knownHit = 0;
         let refused = 0;
+        let domainsRefused = 0;
         let firstRefusal = '';
         let infraMissing = false;
         let links = 0;
@@ -244,6 +245,13 @@ const processActivityImport = definePlugin({
                     infraMissing = true;
                     continue;
                 }
+                // A name the newest Domain type takes and the project's older one does not (an
+                // internationalised TLD on Infrastructure 4.2): counted with the names no Domain
+                // type takes, not as a failed write, and its link is left out with it.
+                if (d.role === 'domain') {
+                    domainsRefused++;
+                    continue;
+                }
                 refused++;
                 firstRefusal ||= msg;
             }
@@ -273,8 +281,9 @@ const processActivityImport = definePlugin({
                     if (e.data) {
                         // This import's summary replaces the last one whole, so the keys it has no
                         // value for are cleared rather than left describing an earlier export. Sent
-                        // whether or not it changed: edges() returns no data to compare with, and the
-                        // host stages the call only when a key differs, a null matching no value.
+                        // whether or not it changed: the host stages the call only when a key
+                        // differs, a null matching no value, and an older app's edges() handed back
+                        // no data to compare with here.
                         const data = e.keys ? { ...Object.fromEntries(e.keys.map((k) => [k, null])), ...e.data } : e.data;
                         if (ctx.graph!.updateEdge) await ctx.graph!.updateEdge(live.id, { data });
                         // A host without updateEdge: the live wording with data is the same update.
@@ -306,6 +315,8 @@ const processActivityImport = definePlugin({
             t.reverseLookups && `${n(t.reverseLookups, 'reverse lookup')}`,
             t.addressQueries && `${n(t.addressQueries, 'query', 'queries')} for an address rather than a name`,
             t.invalidNames && `${n(t.invalidNames, 'name')} the Domain type does not accept`,
+            domainsRefused &&
+                `${n(domainsRefused, 'name')} this project's Domain type does not accept (Infrastructure 4.3 or later takes internationalised names)`,
             t.badAddresses && `${n(t.badAddresses, 'unparseable address', 'unparseable addresses')}`,
             t.noGuid && `${n(t.noGuid, 'event')} with no ProcessGuid or entity_id (a process is identified by it)`,
             p.unnamed && `${n(p.unnamed, 'process', 'processes')} with no image name`,
@@ -351,6 +362,7 @@ const processActivityImport = definePlugin({
                 no_guid: t.noGuid,
                 not_imported: p.notImported,
                 refused: refused + linkFailures,
+                domains_refused: domainsRefused,
             },
         };
     },

@@ -1,10 +1,11 @@
 // Addresses and names as a host log writes them, turned into the one spelling the graph keys on.
 //
-// `infrastructure.ip_address` and `infrastructure.domain` are identified by their value, compared
-// byte for byte (the domain folds case, the address does not). Sysmon writes an IPv4 answer as
-// `::ffff:203.0.113.10` and an IPv6 address in whatever form Windows rendered it, so writing the
-// log's text straight through would put one address on the canvas twice: once from this pack and
-// once from every DNS pack that wrote the dotted quad. Everything here is pure and dependency-free
+// `infrastructure.ip_address` and `infrastructure.domain` are identified by their value. Sysmon
+// writes an IPv4 answer as `::ffff:203.0.113.10`, which no Infrastructure pack compares equal to the
+// dotted quad, and an IPv6 address in whatever form Windows rendered it, which Infrastructure 4.3
+// folds to RFC 5952 when it compares and an older pack compared byte for byte. So writing the log's
+// text straight through would put one address on the canvas twice: once from this pack and once
+// from every DNS pack that wrote the canonical form. Everything here is pure and dependency-free
 // so the tests can call it without a sandbox.
 
 export type AddressClass = 'public' | 'private' | 'local';
@@ -139,10 +140,15 @@ export function parseAddress(raw: unknown): Address | null {
 // ---- names -----------------------------------------------------------------------------------
 
 /**
- * The Domain type's own validator (typepack-basic `infrastructure.json`). Checked here because the
- * host refuses a create that fails it by throwing, and one bad name must not cost the whole run.
+ * The Domain type's own validator (typepack-basic `infrastructure.json`, Infrastructure 4.3.1),
+ * verbatim: test-plugin.mjs compares it with the type pack checked out beside this repository.
+ * Checked here because the host refuses a create that fails it by throwing, and one bad name must
+ * not cost the whole run. 4.3 takes a name under an internationalised TLD (`пример.рф`,
+ * `example.xn--p1ai`) that 4.2 refused; a project still on 4.2 refuses it at the write, and
+ * main.ts counts that name with the ones this check turns away.
  */
-const DOMAIN_RE = /^[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/;
+export const DOMAIN_REGEX = '^[a-zA-Z0-9._\\u0080-\\uffff-]+\\.(?:[a-zA-Z\\u0080-\\uffff]{2,}|[xX][nN]--[a-zA-Z0-9-]{2,})\\.?$';
+const DOMAIN_RE = new RegExp(DOMAIN_REGEX);
 
 /**
  * Suffixes that only ever resolve inside someone's network. `.home` and `.corp` are not reserved,

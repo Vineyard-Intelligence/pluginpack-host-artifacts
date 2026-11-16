@@ -54,7 +54,7 @@ investigating first.
 | `endpoint.process` | `process_name` (image file name), `process_guid` (`{lower-case}` for a GUID, otherwise as given), `pid`, `parent_pid`, `command_line`, `user`, `start_time`; not declared by the type: `hostname`, `image_path`, `integrity_level`, `destinations_not_imported` when a process reached more than 200 destinations, and `command_line_truncated` with the full `command_line_length` when the command line was cut to fit one node |
 | `endpoint.file` | the executable, only when the export carries its hash: `file_name`, `file_path`, `sha256`, `md5`, `hostname`; not declared: `sha1`, `imphash`, `original_file_name`, `company`, `product`, `file_version`, `file_description` |
 | `infrastructure.ip_address` | `ip_address` (dotted quad, or RFC 5952 IPv6; an IPv4-mapped address is the IPv4 address), `version` |
-| `infrastructure.domain` | `domain_name` (lower case, no trailing dot) |
+| `infrastructure.domain` | `domain_name` (lower case, no trailing dot). A name under an internationalised TLD (`пример.рф`, `example.xn--p1ai`) needs Infrastructure 4.3 or later; a project on an older one refuses it, and the summary counts it with the names the Domain type does not accept |
 
 | From → to | Label | Edge data |
 |---|---|---|
@@ -78,9 +78,9 @@ link and records it in `corroborated_by`, and this pack would only have read the
 
 A new link is stored with its summary from the first import, and the link's Properties panel and
 the review show it under **Recorded with this link**. A later import sends every summarised link's
-summary again, changed or not, because the plugin cannot compare it (`edges()` returns no data).
-The host does: it stages an edge write only when a key differs from what the link stores, a null
-matching a key the link does not have. Importing the same export twice therefore stages nothing,
+summary again, changed or not, and leaves the comparing to the host (an older app's `edges()` gave
+a plugin no data to compare with): it stages an edge write only when a key differs from what the
+link stores, a null matching a key the link does not have. Importing the same export twice therefore stages nothing,
 and a later export puts up for review only the links whose summary it changes.
 
 **Left out:** loopback, link-local, multicast and unspecified addresses always; private-network
